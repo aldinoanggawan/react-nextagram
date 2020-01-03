@@ -10,7 +10,6 @@ position: absolute;
 `
 
 const UploadPage = () => {
-    const jwt = localStorage.getItem('jwt')
 
     const [imageFile, setImageFile] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
@@ -25,15 +24,16 @@ const UploadPage = () => {
     const handleSubmitFile = e => {
         e.preventDefault()
 
-        const jwt = localStorage.getItem('jwt')
-        const formData = new FormData()
+        let jwt = localStorage.getItem('jwt')
+        let formData = new FormData()
         formData.append("image", imageFile)
 
         Axios.post('https://insta.nextacademy.com/api/v1/images/',
             formData, {
-            headers: {Autorization: `Bearer ${jwt}`}
+            headers: {Authorization: `Bearer ${jwt}`}
         })
         .then(result => {
+            console.log(result)
             if (result.data.success) {
                 setMessage('Image Uploaded Successfully!')
                 setPreviewImage(null)
@@ -65,7 +65,7 @@ const UploadPage = () => {
             }
         </div>
 
-        <Form onSubmit={handleSubmitFile}>
+        <Form >
             <FormGroup>
                 <Input
                     type="file"
@@ -76,7 +76,7 @@ const UploadPage = () => {
                     Make sure the image is a supported format
                 </FormText>
             </FormGroup>
-            <Button type="submit" color="primary">Upload</Button>
+            <Button onClick={handleSubmitFile} type="submit" color="primary">Upload</Button>
         </Form>
         </Contain>
     )
