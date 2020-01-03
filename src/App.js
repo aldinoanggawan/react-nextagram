@@ -13,7 +13,7 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem('jwt') !== null
   )
-  
+  const newLine = null
 
   return (
     <>
