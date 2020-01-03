@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Route, Switch} from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-function App() {
+import HomePage from './pages/HomePage'
+import UserProfilePage from './pages/UserProfilePage'
+import Navbar from './components/Navbar'
+import MyProfilePage from './pages/MyProfilePage';
+import UploadPage from './pages/UploadPage';
+
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem('jwt') !== null
+  )
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <ToastContainer />
+      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route path="/users/:id">
+          <UserProfilePage />
+        </Route>
+        <Route exact path="/profile">
+          <MyProfilePage loggedIn={loggedIn}/>
+        </Route>
+        <Route exact path="/upload">
+          <UploadPage />
+        </Route>
+      </Switch>
+    </>
+  )
 }
 
-export default App;
+export default App
